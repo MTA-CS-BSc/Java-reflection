@@ -1,5 +1,8 @@
 package reflection.api;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,9 +28,13 @@ public class Inspector implements Investigator {
         return classToInspect.getConstructors().length;
     }
 
+    private Field[] getFields() {
+        return classToInspect.getDeclaredFields();
+    }
+
     @Override
     public int getTotalNumberOfFields() {
-        return classToInspect.getDeclaredFields().length;
+        return getFields().length;
     }
 
     @Override
@@ -51,7 +58,9 @@ public class Inspector implements Investigator {
 
     @Override
     public int getCountOfConstantFields() {
-        return 0;
+        return (int) Arrays.stream(getFields())
+                .filter(field -> Modifier.isFinal(field.getModifiers()))
+                .count();
     }
 
     @Override

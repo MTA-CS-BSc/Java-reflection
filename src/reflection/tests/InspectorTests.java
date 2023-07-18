@@ -42,4 +42,11 @@ public class InspectorTests {
     public void testGetSimpleInterfacesNames() {
         Assertions.assertTrue(validateInterfacesNames(inspector.getAllImplementedInterfaces()));
     }
+
+    @Test
+    @DisplayName("Test for constant(=final) fields amount")
+    public void testConstantsAmount() {
+        Assertions.assertEquals(1, inspector.getCountOfConstantFields());
+    }
+
 }
