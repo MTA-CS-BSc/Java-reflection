@@ -126,19 +126,12 @@ public class Inspector implements Investigator {
 
     @Override
     public int invokeMethodThatReturnsInt(String methodName, Object... args) {
-        Optional<Method> relevantMethod = Arrays.stream(getMethods())
-                                            .filter(method -> method.getName().equals(methodName) && method.getReturnType().equals(int.class))
-                                            .findFirst();
-
-        if (relevantMethod.isPresent()) {
-            try {
-                return (int)relevantMethod.get().invoke(objectToInspect, args);
-            } catch (Exception e) {
-                return -1;
-            }
+        try {
+            Method relevantMethod = classToInspect.getDeclaredMethod(methodName);
+            return (int)relevantMethod.invoke(objectToInspect, args);
+        } catch (Exception e) {
+            return -1;
         }
-
-        return -1;
     }
 
     @Override
@@ -160,7 +153,12 @@ public class Inspector implements Investigator {
 
     @Override
     public Object elevateMethodAndInvoke(String name, Class<?>[] parametersTypes, Object... args) {
-        return null;
+        try {
+            Method relevantMethod = classToInspect.getDeclaredMethod(name, parametersTypes);
+            return relevantMethod.invoke(objectToInspect, args);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
