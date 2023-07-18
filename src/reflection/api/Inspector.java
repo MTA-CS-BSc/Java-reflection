@@ -1,8 +1,6 @@
 package reflection.api;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -11,9 +9,6 @@ public class Inspector implements Investigator {
 
     //region Functionality
     public Inspector() { }
-    private Field[] getSelfFields() {
-        return getClassFields(classToInspect);
-    }
 
     private Field[] getClassFields(Class<?> someClass) {
         return someClass.getDeclaredFields();
@@ -37,6 +32,10 @@ public class Inspector implements Investigator {
 
     private Class<?> getParent() {
         return classToInspect.getSuperclass();
+    }
+
+    private Constructor<?>[] getCtors() {
+        return classToInspect.getConstructors();
     }
 
     private List<String> getInheritanceChainArray() {
@@ -66,12 +65,12 @@ public class Inspector implements Investigator {
 
     @Override
     public int getTotalNumberOfConstructors() {
-        return classToInspect.getConstructors().length;
+        return getCtors().length;
     }
 
     @Override
     public int getTotalNumberOfFields() {
-        return getSelfFields().length;
+        return getClassFields(classToInspect).length;
     }
 
     @Override
@@ -89,7 +88,7 @@ public class Inspector implements Investigator {
 
     @Override
     public int getCountOfConstantFields() {
-        return (int) Arrays.stream(getSelfFields())
+        return (int) Arrays.stream(getClassFields(classToInspect))
                 .filter(field -> Modifier.isFinal(field.getModifiers()))
                 .count();
     }
@@ -132,6 +131,18 @@ public class Inspector implements Investigator {
 
     @Override
     public Object createInstance(int numberOfArgs, Object... args) {
+        Optional<Constructor<?>> relevantCtor = Arrays.stream(getCtors())
+                                      .filter(ctor -> ctor.getParameterCount() == numberOfArgs)
+                                      .findFirst();
+
+        if (relevantCtor.isPresent()) {
+            try {
+                return relevantCtor.get().newInstance(args);
+            } catch (Exception e) {
+                return null;
+            }
+        }
+
         return null;
     }
 

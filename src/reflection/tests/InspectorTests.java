@@ -75,7 +75,8 @@ public class InspectorTests {
 
     private boolean validateFieldNames(Set<String> fieldNames) {
         return fieldNames.contains("x") && fieldNames.contains("y")
-                && fieldNames.contains("SCALE") && fieldNames.contains("points");
+                && fieldNames.contains("SCALE") && fieldNames.contains("points")
+                && fieldNames.size() == 4;
     }
     @Test
     @DisplayName("Test for all field names including inheritance")
