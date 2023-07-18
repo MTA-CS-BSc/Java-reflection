@@ -1,12 +1,10 @@
 package reflection.tests;
-import com.sun.xml.internal.ws.policy.AssertionSet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import reflection.api.Inspector;
 import reflection.classes.Rectangle;
 
-import java.io.Serializable;
 import java.util.Set;
 
 public class InspectorTests {
@@ -38,7 +36,7 @@ public class InspectorTests {
     private boolean validateInterfacesNames(Set<String> result) {
         return result.size() == 2 && result.contains("Comparable") && result.contains("Serializable");
     }
-    
+
     @Test
     @DisplayName("Test for class interfaces simple names")
     public void testGetSimpleInterfacesNames() {
