@@ -83,4 +83,12 @@ public class InspectorTests {
     public void testAllFieldNames() {
         Assertions.assertTrue(validateFieldNames(inspector.getNamesOfAllFieldsIncludingInheritanceChain()));
     }
+
+    @Test
+    @DisplayName("Test for instance creation")
+    public void testInstanceCreation() {
+        Object dup = inspector.createInstance(2, 5, 7);
+        Assertions.assertInstanceOf(Rectangle.class, dup);
+        Assertions.assertEquals(35, ((Rectangle)dup).calcArea());
+    }
 }
