@@ -12,7 +12,7 @@ public class InspectorTests {
     Inspector inspector;
 
     public InspectorTests() {
-        testRectangle = new Rectangle(1, 1);
+        testRectangle = new Rectangle(5, 7);
         inspector = new Inspector();
         inspector.load(testRectangle);
     }
@@ -90,5 +90,11 @@ public class InspectorTests {
         Object dup = inspector.createInstance(2, 5, 7);
         Assertions.assertInstanceOf(Rectangle.class, dup);
         Assertions.assertEquals(35, ((Rectangle)dup).calcArea());
+    }
+
+    @Test
+    @DisplayName("Test for invoke int method")
+    public void testInvokeIntMethod() {
+        Assertions.assertEquals(35, inspector.invokeMethodThatReturnsInt("calcArea"));
     }
 }

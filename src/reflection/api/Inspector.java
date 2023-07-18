@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 public class Inspector implements Investigator {
     private Class<?> classToInspect;
+    private Object objectToInspect;
 
     //region Functionality
     public Inspector() { }
@@ -56,6 +57,7 @@ public class Inspector implements Investigator {
     @Override
     public void load(Object anInstanceOfSomething) {
         classToInspect = anInstanceOfSomething.getClass();
+        objectToInspect = anInstanceOfSomething;
     }
 
     @Override
@@ -79,9 +81,7 @@ public class Inspector implements Investigator {
             return Arrays.stream(classToInspect.getInterfaces())
                          .map(Class::getSimpleName)
                           .collect(Collectors.toSet());
-        }
-
-        catch (Error err) {
+        } catch (Error err) {
             return Collections.emptySet();
         }
     }
@@ -126,7 +126,19 @@ public class Inspector implements Investigator {
 
     @Override
     public int invokeMethodThatReturnsInt(String methodName, Object... args) {
-        return 0;
+        Optional<Method> relevantMethod = Arrays.stream(getMethods())
+                                            .filter(method -> method.getName().equals(methodName) && method.getReturnType().equals(int.class))
+                                            .findFirst();
+
+        if (relevantMethod.isPresent()) {
+            try {
+                return (int)relevantMethod.get().invoke(objectToInspect, args);
+            } catch (Exception e) {
+                return -1;
+            }
+        }
+
+        return -1;
     }
 
     @Override
