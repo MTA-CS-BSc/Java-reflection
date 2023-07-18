@@ -11,8 +11,14 @@ public class Inspector implements Investigator {
     static final int ERROR_INDICATOR = -1;
     private Class<?> classToInspect;
 
+    //region Functionality
     public Inspector() { }
+    private Field[] getFields() {
+        return classToInspect.getDeclaredFields();
+    }
+    //endregion
 
+    //region interface implementations
     @Override
     public void load(Object anInstanceOfSomething) {
         classToInspect = anInstanceOfSomething.getClass();
@@ -26,10 +32,6 @@ public class Inspector implements Investigator {
     @Override
     public int getTotalNumberOfConstructors() {
         return classToInspect.getConstructors().length;
-    }
-
-    private Field[] getFields() {
-        return classToInspect.getDeclaredFields();
     }
 
     @Override
@@ -107,4 +109,5 @@ public class Inspector implements Investigator {
     public String getInheritanceChain(String delimiter) {
         return null;
     }
+    //#endregion
 }
