@@ -3,11 +3,10 @@ package reflection.api;
 import java.util.Set;
 
 public class Inspector implements Investigator {
+    static final int ERROR_INDICATOR = -1;
     private Class<?> classToInspect;
 
-    public Inspector() {
-        classToInspect = null;
-    }
+    public Inspector() { }
 
     @Override
     public void load(Object anInstanceOfSomething) {
@@ -16,12 +15,24 @@ public class Inspector implements Investigator {
 
     @Override
     public int getTotalNumberOfMethods() {
-        return classToInspect.getMethods().length;
+        try {
+            return classToInspect.getMethods().length;
+        }
+
+        catch (Error err) {
+            return ERROR_INDICATOR;
+        }
     }
 
     @Override
     public int getTotalNumberOfConstructors() {
-        return classToInspect.getConstructors().length;
+        try {
+            return classToInspect.getConstructors().length;
+        }
+
+        catch (Error err) {
+            return ERROR_INDICATOR;
+        }
     }
 
     @Override
