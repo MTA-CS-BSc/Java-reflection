@@ -17,35 +17,17 @@ public class Inspector implements Investigator {
 
     @Override
     public int getTotalNumberOfMethods() {
-        try {
-            return classToInspect.getDeclaredMethods().length;
-        }
-
-        catch (Error err) {
-            return ERROR_INDICATOR;
-        }
+        return classToInspect.getDeclaredMethods().length;
     }
 
     @Override
     public int getTotalNumberOfConstructors() {
-        try {
-            return classToInspect.getConstructors().length;
-        }
-
-        catch (Error err) {
-            return ERROR_INDICATOR;
-        }
+        return classToInspect.getConstructors().length;
     }
 
     @Override
     public int getTotalNumberOfFields() {
-        try {
-            return classToInspect.getDeclaredFields().length;
-        }
-
-        catch (Error err) {
-            return ERROR_INDICATOR;
-        }
+        return classToInspect.getDeclaredFields().length;
     }
 
     @Override
