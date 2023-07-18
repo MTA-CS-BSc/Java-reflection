@@ -49,4 +49,10 @@ public class InspectorTests {
         Assertions.assertEquals(1, inspector.getCountOfConstantFields());
     }
 
+    @Test
+    @DisplayName("Test for static methods amount")
+    public void testStaticMethodsAmount() {
+        Assertions.assertEquals(1, inspector.getCountOfStaticMethods());
+    }
+
 }

@@ -1,6 +1,7 @@
 package reflection.api;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,6 +17,11 @@ public class Inspector implements Investigator {
     private Field[] getFields() {
         return classToInspect.getDeclaredFields();
     }
+
+    private Method[] getMethods() {
+        return classToInspect.getDeclaredMethods();
+    }
+
     //endregion
 
     //region interface implementations
@@ -26,7 +32,7 @@ public class Inspector implements Investigator {
 
     @Override
     public int getTotalNumberOfMethods() {
-        return classToInspect.getDeclaredMethods().length;
+        return getMethods().length;
     }
 
     @Override
@@ -46,9 +52,8 @@ public class Inspector implements Investigator {
         try {
             Class<?>[] implementedInteraces =  classToInspect.getInterfaces();
 
-            for (Class<?> c : implementedInteraces) {
+            for (Class<?> c : implementedInteraces)
                 interfaces.add(c.getSimpleName());
-            }
 
             return interfaces;
         }
@@ -67,7 +72,9 @@ public class Inspector implements Investigator {
 
     @Override
     public int getCountOfStaticMethods() {
-        return 0;
+        return (int) Arrays.stream(getMethods())
+                .filter(method -> Modifier.isStatic(method.getModifiers()))
+                .count();
     }
 
     @Override
