@@ -3,19 +3,25 @@ package reflection.api;
 import java.util.Set;
 
 public class Inspector implements Investigator {
+    private Class<?> classToInspect;
+
+    public Inspector() {
+        classToInspect = null;
+    }
+
     @Override
     public void load(Object anInstanceOfSomething) {
-
+        classToInspect = anInstanceOfSomething.getClass();
     }
 
     @Override
     public int getTotalNumberOfMethods() {
-        return 0;
+        return classToInspect.getMethods().length;
     }
 
     @Override
     public int getTotalNumberOfConstructors() {
-        return 0;
+        return classToInspect.getConstructors().length;
     }
 
     @Override
