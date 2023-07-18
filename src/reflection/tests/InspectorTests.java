@@ -61,4 +61,10 @@ public class InspectorTests {
         Assertions.assertTrue(inspector.isExtending());
     }
 
+    @Test
+    @DisplayName("Test for is abstract superclass")
+    public void testIsSuperclassAbstract() {
+        Assertions.assertFalse(inspector.isParentClassAbstract());
+    }
+
 }

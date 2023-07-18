@@ -21,6 +21,9 @@ public class Inspector implements Investigator {
         return classToInspect.getDeclaredMethods();
     }
 
+    private Class<?> getParent() {
+        return classToInspect.getSuperclass();
+    }
     //endregion
 
     //region interface implementations
@@ -77,19 +80,20 @@ public class Inspector implements Investigator {
     }
 
     @Override
+    public String getParentClassSimpleName() {
+        String parentClassName = getParent().getSimpleName();
+        return parentClassName.equals("Object") ? null : parentClassName;
+    }
+
+    @Override
     public boolean isExtending() {
         return getParentClassSimpleName() != null;
     }
 
     @Override
-    public String getParentClassSimpleName() {
-        String parentClassName = classToInspect.getSuperclass().getSimpleName();
-        return parentClassName.equals("Object") ? null : parentClassName;
-    }
-
-    @Override
     public boolean isParentClassAbstract() {
-        return false;
+        return getParentClassSimpleName() != null &&
+                Modifier.isAbstract(getParent().getModifiers());
     }
 
     @Override
