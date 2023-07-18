@@ -16,7 +16,7 @@ public class Inspector implements Investigator {
     @Override
     public int getTotalNumberOfMethods() {
         try {
-            return classToInspect.getMethods().length;
+            return classToInspect.getDeclaredMethods().length;
         }
 
         catch (Error err) {
