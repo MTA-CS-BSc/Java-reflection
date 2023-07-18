@@ -27,5 +27,10 @@ public class InspectorTests {
         Assertions.assertEquals(6, inspector.getTotalNumberOfMethods());
     }
 
+    @Test
+    @DisplayName("Test for class data members amount")
+    public void testGetTotalNumberOfFields() {
+        Assertions.assertEquals(3, inspector.getTotalNumberOfFields());
+    }
 
 }

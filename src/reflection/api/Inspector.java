@@ -37,7 +37,13 @@ public class Inspector implements Investigator {
 
     @Override
     public int getTotalNumberOfFields() {
-        return 0;
+        try {
+            return classToInspect.getDeclaredFields().length;
+        }
+
+        catch (Error err) {
+            return ERROR_INDICATOR;
+        }
     }
 
     @Override
