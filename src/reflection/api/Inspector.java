@@ -155,6 +155,7 @@ public class Inspector implements Investigator {
     public Object elevateMethodAndInvoke(String name, Class<?>[] parametersTypes, Object... args) {
         try {
             Method relevantMethod = classToInspect.getDeclaredMethod(name, parametersTypes);
+            relevantMethod.setAccessible(true);
             return relevantMethod.invoke(objectToInspect, args);
         } catch (Exception e) {
             return null;
