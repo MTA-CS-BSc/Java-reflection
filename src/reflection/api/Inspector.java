@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Inspector implements Investigator {
-    static final int ERROR_INDICATOR = -1;
     private Class<?> classToInspect;
 
     //region Functionality
