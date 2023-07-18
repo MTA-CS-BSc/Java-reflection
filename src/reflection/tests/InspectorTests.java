@@ -55,4 +55,10 @@ public class InspectorTests {
         Assertions.assertEquals(1, inspector.getCountOfStaticMethods());
     }
 
+    @Test
+    @DisplayName("Test for is extending not Object")
+    public void testIsExtending() {
+        Assertions.assertTrue(inspector.isExtending());
+    }
+
 }

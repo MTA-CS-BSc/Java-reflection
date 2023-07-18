@@ -79,7 +79,7 @@ public class Inspector implements Investigator {
 
     @Override
     public boolean isExtending() {
-        return false;
+        return !classToInspect.getSuperclass().getSimpleName().equals("Object");
     }
 
     @Override
