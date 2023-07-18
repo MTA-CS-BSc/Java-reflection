@@ -79,12 +79,13 @@ public class Inspector implements Investigator {
 
     @Override
     public boolean isExtending() {
-        return !classToInspect.getSuperclass().getSimpleName().equals("Object");
+        return getParentClassSimpleName() != null;
     }
 
     @Override
     public String getParentClassSimpleName() {
-        return null;
+        String parentClassName = classToInspect.getSuperclass().getSimpleName();
+        return parentClassName.equals("Object") ? null : parentClassName;
     }
 
     @Override
