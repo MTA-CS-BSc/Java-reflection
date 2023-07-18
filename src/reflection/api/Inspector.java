@@ -1,5 +1,7 @@
 package reflection.api;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 public class Inspector implements Investigator {
@@ -48,7 +50,21 @@ public class Inspector implements Investigator {
 
     @Override
     public Set<String> getAllImplementedInterfaces() {
-        return null;
+        Set<String> interfaces = new HashSet<>();
+
+        try {
+            Class<?>[] implementedInteraces =  classToInspect.getInterfaces();
+
+            for (Class<?> c : implementedInteraces) {
+                interfaces.add(c.getSimpleName());
+            }
+
+            return interfaces;
+        }
+
+        catch (Error err) {
+            return Collections.emptySet();
+        }
     }
 
     @Override
