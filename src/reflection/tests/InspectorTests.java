@@ -72,4 +72,14 @@ public class InspectorTests {
     public void testInheritanceChain() {
         Assertions.assertEquals("Object,Polygon,Rectangle", inspector.getInheritanceChain(","));
     }
+
+    private boolean validateFieldNames(Set<String> fieldNames) {
+        return fieldNames.contains("x") && fieldNames.contains("y")
+                && fieldNames.contains("SCALE") && fieldNames.contains("points");
+    }
+    @Test
+    @DisplayName("Test for all field names including inheritance")
+    public void testAllFieldNames() {
+        Assertions.assertTrue(validateFieldNames(inspector.getNamesOfAllFieldsIncludingInheritanceChain()));
+    }
 }

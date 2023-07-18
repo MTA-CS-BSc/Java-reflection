@@ -4,14 +4,31 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Inspector implements Investigator {
     private Class<?> classToInspect;
 
     //region Functionality
     public Inspector() { }
-    private Field[] getFields() {
-        return classToInspect.getDeclaredFields();
+    private Field[] getSelfFields() {
+        return getClassFields(classToInspect);
+    }
+
+    private Field[] getClassFields(Class<?> someClass) {
+        return someClass.getDeclaredFields();
+    }
+
+    private List<Field> getAllFields() {
+        List<Field> fields = new ArrayList<>();
+        Class<?> someClass = classToInspect;
+
+        while (someClass != null) {
+            fields.addAll(Arrays.stream(getClassFields(someClass)).collect(Collectors.toList()));
+            someClass = someClass.getSuperclass();
+        }
+
+        return fields;
     }
 
     private Method[] getMethods() {
@@ -22,8 +39,9 @@ public class Inspector implements Investigator {
         return classToInspect.getSuperclass();
     }
 
-    private List<String> getInheritanceChainArray(Class<?> someClass) {
+    private List<String> getInheritanceChainArray() {
         List<String> res = new ArrayList<>();
+        Class<?> someClass = classToInspect;
 
         while (someClass != null) {
             res.add(someClass.getSimpleName());
@@ -53,20 +71,15 @@ public class Inspector implements Investigator {
 
     @Override
     public int getTotalNumberOfFields() {
-        return getFields().length;
+        return getSelfFields().length;
     }
 
     @Override
     public Set<String> getAllImplementedInterfaces() {
-        Set<String> interfaces = new HashSet<>();
-
         try {
-            Class<?>[] implementedInteraces =  classToInspect.getInterfaces();
-
-            for (Class<?> c : implementedInteraces)
-                interfaces.add(c.getSimpleName());
-
-            return interfaces;
+            return Arrays.stream(classToInspect.getInterfaces())
+                         .map(Class::getSimpleName)
+                          .collect(Collectors.toSet());
         }
 
         catch (Error err) {
@@ -76,7 +89,7 @@ public class Inspector implements Investigator {
 
     @Override
     public int getCountOfConstantFields() {
-        return (int) Arrays.stream(getFields())
+        return (int) Arrays.stream(getSelfFields())
                 .filter(field -> Modifier.isFinal(field.getModifiers()))
                 .count();
     }
@@ -107,7 +120,9 @@ public class Inspector implements Investigator {
 
     @Override
     public Set<String> getNamesOfAllFieldsIncludingInheritanceChain() {
-        return null;
+        return getAllFields().stream()
+                .map(Field::getName)
+                .collect(Collectors.toSet());
     }
 
     @Override
@@ -127,7 +142,7 @@ public class Inspector implements Investigator {
 
     @Override
     public String getInheritanceChain(String delimiter) {
-        return String.join(delimiter, getInheritanceChainArray(classToInspect));
+        return String.join(delimiter, getInheritanceChainArray());
     }
     //#endregion
 }
