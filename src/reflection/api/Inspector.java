@@ -3,10 +3,7 @@ package reflection.api;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Inspector implements Investigator {
     private Class<?> classToInspect;
@@ -23,6 +20,18 @@ public class Inspector implements Investigator {
 
     private Class<?> getParent() {
         return classToInspect.getSuperclass();
+    }
+
+    private List<String> getInheritanceChainArray(Class<?> someClass) {
+        List<String> res = new ArrayList<>();
+
+        while (someClass != null) {
+            res.add(someClass.getSimpleName());
+            someClass = someClass.getSuperclass();
+        }
+
+        Collections.reverse(res);
+        return res;
     }
     //endregion
 
@@ -118,7 +127,7 @@ public class Inspector implements Investigator {
 
     @Override
     public String getInheritanceChain(String delimiter) {
-        return null;
+        return String.join(delimiter, getInheritanceChainArray(classToInspect));
     }
     //#endregion
 }

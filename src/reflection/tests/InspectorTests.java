@@ -67,4 +67,9 @@ public class InspectorTests {
         Assertions.assertFalse(inspector.isParentClassAbstract());
     }
 
+    @Test
+    @DisplayName("Test inheritance chain")
+    public void testInheritanceChain() {
+        Assertions.assertEquals("Object,Polygon,Rectangle", inspector.getInheritanceChain(","));
+    }
 }
