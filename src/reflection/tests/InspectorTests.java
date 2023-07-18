@@ -3,16 +3,21 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import reflection.api.Inspector;
+import reflection.classes.Polygon;
 import reflection.classes.Rectangle;
 
 import java.util.Set;
 
 public class InspectorTests {
     Rectangle testRectangle;
+
+    Polygon testPolygon;
+
     Inspector inspector;
 
     public InspectorTests() {
         testRectangle = new Rectangle(5, 7);
+        testPolygon = new Polygon();
         inspector = new Inspector();
         inspector.load(testRectangle);
     }

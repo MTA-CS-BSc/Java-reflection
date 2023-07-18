@@ -4,7 +4,7 @@ import java.lang.reflect.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Inspector implements Investigator {
+public class Inspector implements reflection.api.Investigator {
     private Class<?> classToInspect;
     private Object objectToInspect;
 
