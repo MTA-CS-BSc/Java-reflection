@@ -2,7 +2,7 @@ package reflection.api;
 
 import java.util.Set;
 
-public class Inspector extends Investigator {
+public class Inspector implements Investigator {
     @Override
     public void load(Object anInstanceOfSomething) {
 
